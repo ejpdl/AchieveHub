@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> AchieveHub </title>
+    <link rel = "icon" type = "image/png" href = "../assets/logo/euC.png">
+    <link rel = "stylesheet" href = "student.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    
+    <!-- START OF NAVIGATION PAGE -->
+    <nav> 
+
+        <a href = "#">
+            <img src = "../assets/logo/euC.png" alt = "MSEUF logo" class = "logo-image">
+        </a>
+
+        <ul class = "menus">
+            <a href = "#home"> <button class = "nav-menus"> Home </button> </a>
+            <a href = "#about"> <button class = "nav-menus"> About </button> </a>
+            <a href = "#artifacts"> <button class = "nav-menus"> Artifacts </button> </a>
+            <a href = "#peers"> <button class = "nav-menus"> Peers </button> </a>
+        </ul>
+
+        <a href = "../Log_In_Page/log_in.html" rel="noopener noreferrer">
+            <button class = "log-out-button"> Log Out </button>
+        </a>
+
+    </nav>
+    <!-- END OF NAVIGATION PAGE -->
+
+    <!-- START OF HOME PAGE -->
+    <section id = "home"> 
+
+        <img id = "profile" src = "../assets/profiles/2x2(EJ).jpg" alt = "profile-image">
+
+        <div class = "information-container">
+
+            <h1> Hello, I'm </h1>
+            <span class = "typed">  </span>
+            <h3> <span class = "grade_section" id = "grade_section"> Grade and Section </span> </h3>
+            <p>  
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae unde, maxime vitae totam nesciunt officia porro tempore similique voluptatem eius! 
+            </p>
+
+        </div>
+
+        <div class = "edit-upload-container">
+
+            <div class = "edit-upload-button" onclick = "EditDialog()">
+                <a href = "#edit" class = "edit-button"> Edit </a>
+            </div>
+
+            <div class = "edit-upload-button" onclick = "showUploadDialog(true)">
+                <a href = "#upload" class = "upload-button"> Upload </a>
+            </div>
+
+        </div>
+
+        <dialog id = "Edit-dialog">
+
+            <div class = "edit-container">
+
+                <div class = "form-edit-container">
+
+                    <h2> Update your Information </h2>
+
+                    <hr></hr>
+
+                    <form action = "http://localhost:5000/single" method = "POST" enctype = "multipart/form-data">
+
+                        <input type = "hidden" id = "studentID" name = "studentID" />
+
+                        <div class = "two-column-layout">
+
+                            <div class = "left-column">
+
+                                <div class = "edit-form">
+                                    <label for = "fname"> First Name: </label>
+                                    <input type = "text" id = "fname" name = "fname" placeholder = "Enter your first name" required />  
+                                </div>
+
+                                <div class = "edit-form">
+                                    <label for = "gender"> Gender </label>
+                                    <select id = "gender" name = "gender">
+                                        <option value = ""> -Select Gender- </option>
+                                        <option value = "Male"> Male </option>
+                                        <option value = "Female"> Female </option>
+                                    </select>
+                                </div>
+
+                                <div class = "edit-form">
+                                    <label for = "mname"> Middle Name: </label>
+                                    <input type = "text" id = "mname" name = "mname" placeholder = "Enter your middle name" required />
+                                </div>
+
+                                <div class = "edit-form">
+                                    <label for = "lname"> Last Name: </label>
+                                    <input type = "text" id = "lname" name = "lname" placeholder = "Enter your last name" required />
+                                </div>
+
+                                <div class = "edit-form">
+                                    <label for = "grade"> Grade </label>
+                                    <select id = "grade" name = "grade">
+                                        <option value = ""> -Select Grade- </option>
+                                        <option value = "7"> Grade 7 </option>
+                                        <option value = "8"> Grade 8 </option>
+                                        <option value = "9"> Grade 9 </option>
+                                        <option value = "10"> Grade 10 </option>
+                                    </select>
+                                </div>
+
+                                <div class = "edit-form">
+                                    <label for = "section"> Section </label>
+                                    <select id = "section" name = "section">
+                                        <option value = ""> -Select Section- </option>
+                                        <option value = "lirio"> Lirio </option>
+                                        <option value = "hyacinth"> Hyacinth </option>
+                                        <option value = "fresia"> Fresia </option>
+                                    </select>
+                                </div>
+
+                                <div class = "edit-form">
+                                    <label for = "email"> Email: </label>
+                                    <input type = "email" id = "email" name = "email" placeholder = "youremail@gmail.com" required />
+                                </div>
+
+                                <div class = "edit-form">
+                                    <label for = "age"> Age </label>
+                                    <input type = "number" id = "age" name = "age" placeholder = "Enter your age" required />
+                                </div>
+
+                                <div class = "edit-form">
+                                    <label for = "bday"> Birthday </label>
+                                    <input type = "date" id = "bday" name = "bday" placeholder = "Enter your bday" required />
+                                </div>
+
+                            </div>
+
+                            <div class = "right-column">
+
+                                <label for = "profile-label"> Profile Picture </label>
+
+                                <div class = "profile-picture">
+                                    
+                                    <input type = "file" id = "profile-pic" name = "profile-pic" accept = "image/*" />
+
+                                </div>
+
+                                <div class = "bio">
+                        
+                                    <label for = "bio"> Description (Bio): </label>
+                                    <textarea id = "bio" name = "bio" placeholder = "Say something about yourself..."> </textarea>
+
+                                </div>
+                        
+                                <div class = "update-cancel-button">
+                                    <button type = "button" class = "confirm-button" id = "confirm-button"> Update Information </button>
+                                    <button type = "button" class = "cancel-button" id = "cancel-button"> Cancel </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </dialog>
+
+        <dialog id = "Upload-dialog">
+
+            <div class  ="upload-container">
+
+                <div class = "form-upload-container">
+            
+                    <h2> Upload Material </h2>
+            
+                    <hr></hr>
+            
+                    <form action = "http://localhost:5000/upload" method = "POST" enctype = "multipart/form-data">
+            
+                        <div class = "form-group">
+            
+                            <label for = "name"> Title </label>
+                            <input type = "text" id = "name" name = "name" placeholder = "(e.g. Seatwork#1-English)" required />
+            
+                        </div>
+            
+                        <div class="form-group">
+            
+                            <label for = "subject"> Subject </label>
+                            <select id = "subject" name = "subject" required>
+                                <option value = ""> --Select Subject-- </option>
+                                <option value = "english"> English </option>
+                                <option value = "filipino"> Filipino </option>
+                                <option value = "math"> Math </option>
+                                <option value = "science"> Science </option>
+                                <option value = "pe"> P.E. </option>
+                            </select>
+            
+                        </div>
+            
+                        <div class = "form-group">
+            
+                            <label for = "material-type"> Type of Material </label>
+                            <select id = "material-type" name = "material-type" required>
+                                <option value = ""> --Select Material-- </option>
+                                <option value = "quizzes"> Quiz </option>
+                                <option value = "pt"> Performance Task </option>
+                                <option value = "assignment"> Assignment </option>
+                                <option value = "seatwork"> Seatwork </option>
+                                <option value = "exam-papers"> Examination Papers </option>
+                            </select>
+            
+                        </div>
+            
+                        <div class = "form-group">
+            
+                            <label for = "file"> Upload File </label>
+                            <input type = "file" id = "file" name = "file" accept = ".pdf, .docx, .png, .jpg" multiple required />
+            
+                        </div>
+            
+                        <div class = "upload-cancel-button">
+
+                            <button type = "button" class = "upload-confirm"> Confirm Upload </button>
+                            <button type = "button" class = "cancel-upload" id = "cancel-upload"> Cancel </button>
+
+                        </div>
+            
+                    </form>
+            
+                </div>
+            
+            </div>
+
+        </dialog>
+        
+
+    </section>
+    <!-- END OF HOME PAGE -->
+
+
+    <!-- START OF ABOUT PAGE -->
+    <section id = "about">
+
+        <div class = "about-box">
+
+            <div class = "about-info">
+
+                <h1> <span> About Me </span> </h1>
+                <p id = "aboutme"> Bio </p>
+
+            </div>
+
+            <h2> <span> Demographics </span> </h2>
+
+            <div class = "demographics">
+
+                <ul>
+                    <li>
+                        <span> ********** </span>
+                    </li>
+                    <li>
+                        <span> **********@gmail.com </span>
+                    </li>
+                </ul>
+
+            </div>
+
+            <button id = "toggle-eye">
+                <i class = "far fa-eye" id = "eye-icon"> 👁 </i>
+            </button>
+
+        </div>
+
+        <img src = "../assets/profiles/2x2(EJ).jpg" alt = "bio-profile">
+
+    </section>
+    <!-- END OF ABOUT PAGE -->
+
+    <!-- START OF ARTIFACTS PAGE -->
+    <section id = "artifacts">
+
+        <h1 class = "header"> <span> Artifacts </span> </h1>
+
+        <div class = "artifacts-container">
+
+            <div class = "box">
+
+                <h1> <span> Quizzes </span> </h1>
+                <p>
+                    A quiz refers to a short test of knowledge, typically around 10 questions in length, with question formats often including multiple choice, fill in the blanks, true or false and short answer.
+                </p>
+
+                <a href = "#">
+                    <button class = "upload-button-artifacts"> Visit </button>
+                </a>
+
+            </div>
+            
+            <div class = "box">
+                
+                <h1> <span> Performance Tasks </span> </h1>
+                <p>
+                    Include skills demonstration, group presentations, oral work, multimedia presentations, and research projects. 
+                </p>
+                
+                <a href = "#">
+                    <button class = "upload-button-artifacts"> Visit </button>
+                </a>
+
+            </div>
+
+            <div class = "box">
+                
+                <h1> <span> Assignments </span> </h1>
+                <p>
+                    It is used to keep track of the progress of the students in achieving the learning standards and in the development of 21st century skills. 
+                </p>
+        
+                <a href = "#">
+                    <button class = "upload-button-artifacts"> Visit </button>
+                </a>
+
+            </div>
+        
+            <div class = "box">
+                
+                <h1> <span> Seatworks </span> </h1>
+                <p>
+                    Typically short and can include exercises, worksheets, or small projects aimed at reinforcing the lesson taught or assessing students' understanding of the material.
+                </p>
+            
+                <a href = "#">
+                    <button class = "upload-button-artifacts"> Visit </button>
+                </a>
+
+            </div>
+
+            <div class = "box">
+
+                <h1> <span> Examination Papers </span> </h1>
+                <p>
+                    Formal assessments used to evaluate students' understanding and mastery of the curriculum.  
+                </p>
+
+                    <a href = "#">
+                        <button class = "upload-button-artifacts"> Visit </button>
+                    </a>    
+
+             </div>
+
+        </div>
+
+    </section>
+    <!-- END OF ARTIFACTS PAGE -->
+
+    <!-- START OF PEERS PAGE -->
+     <section id = "peers">
+
+        <h1 class = "peer-header"> <span> Peers </span> </h1>
+
+        <div class = "peer-container">
+
+            <a href = "../Classmate_Page/classmate.html?Student_ID=A21-0400">
+                <div class = "peer-cards">
+
+                        <div class = "image">
+                            <img src = "../assets/profiles/2x2(EJ).jpg" alt = "classmate-profile">
+                        </div>
+
+                        <span class = "peer-name"> Chris Santos </span>
+                        <span class = "peer-grade-section"> 7 - Lirio </span>
+
+                </div>
+            </a>
+
+            <a href = "../Classmate_Page/classmate.html?Student_ID=A21-0398">
+                <div class = "peer-cards">
+
+                    <div class = "image">
+                        <img src = "../assets/profiles/2x2(EJ).jpg" alt = "classmate-profile">
+                    </div>
+
+                    <span class = "peer-name"> Ephraim De Lara </span>
+                    <span class = "peer-grade-section"> 7 - Lirio </span>
+
+                </div>
+            </a>
+
+            <a href = "#john">
+                <div class = "peer-cards">
+
+                    <div class = "image">
+                        <img src = "../assets/profiles/2x2(EJ).jpg" alt = "classmate-profile">
+                    </div>
+
+                    <span class = "peer-name"> John Doe </span>
+                    <span class = "peer-grade-section"> 7 - Lirio </span>
+
+                </div>
+            </a>
+
+            <a href = "#Freddie">
+                <div class = "peer-cards">
+
+                    <div class = "image">
+                        <img src = "../assets/profiles/2x2(EJ).jpg" alt = "classmate-profile">
+                    </div>
+
+                    <span class = "peer-name"> Freddie Aguilar </span>
+                    <span class = "peer-grade-section"> 7 - Zirconium </span>
+
+                </div>
+            </a>
+
+        </div>
+       
+     </section>
+    <!-- END OF PEERS PAGE -->
+    
+    <!-- START OF FOOTER PAGE -->
+    <footer>
+
+        <div class = "column-left">
+
+            <div class = "column-box">
+                <span> <i class = "bx bxs-location-plus"> </i> </span>
+                <span> Manuel S. Enverga Candelaria, 4323 </span>
+            </div>
+
+            <div class = "column-box">
+                <span> <i class = "bx bxs-phone-call"> </i> </span>
+                <span> 09381689796 </span>
+            </div>
+
+            <div class = "column-box">
+                <span> <i class = "bx bxs-envelope"> </i> </span>
+                <span> delaraephraim171@gmail.com </span>
+            </div>
+
+        </div>
+
+        <div class = "column-right">
+
+            <span> About my Services </span>
+            <p> 
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis inventore fugit possimus quibusdam nam necessitatibus, eum assumenda? Ea, sed magnam!
+            </p>
+
+        </div>
+
+    </footer>
+    <!-- END OF FOOTER PAGE -->
+ 
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script> <!-- For auto-typed-->
+    <script src = "student_function.js"></script>
+    <script src = "student_fetch.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Classmate Page </title>
+    <link rel = "icon" type = "image/png" href = "../assets/logo/euC.png">
+    <link rel = "stylesheet" href = "classmate.css">
+</head>
+<body>
+
+    <nav> 
+
+        <a href = "#">
+            <img src = "../assets/logo/euC.png" alt = "MSEUF logo" class = "logo-image">
+        </a>
+
+        <ul class = "menus">
+            <a href = "#"> <button class = "nav-menus"> Home </button> </a>
+            <a href = "#artifacts"> <button class = "nav-menus"> Artifacts </button> </a>
+        </ul>
+
+        <a href = "javascript:void(0)" onclick = "history.back()" rel="noopener noreferrer">
+            <button class = "log-out-button"> Back to Profile </button>
+        </a>
+
+    </nav>
+
+    <main>
+
+        <div class = "container">
+
+            <div class = "profile-info">
+
+                <h1 id = "classmate-name"> Classmate Name </h1>
+                <p> <i id = "gradesection"> Grade and Section </i></p>
+                <p id = "bio"> About Me </p>
+
+                <div class = "demographics">
+
+                    <ul>
+                        <li>
+                            > <span> Age </span>
+                        </li>
+                        <li>
+                            > <span> Birthday </span>
+                        </li>
+                        <li>
+                            > <span> Phone Number </span>
+                        </li>
+                        <li>
+                            > <span> Email </span>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <a href = "#">
+                    <button class = "button-artifacts"> See <span id = name-button> </span> Artifacts </button>
+                </a>
+
+            </div>
+
+            <div class = "classmate-profile">
+
+                <img src = "../assets/profiles/2x2(EJ).jpg" class = "profile" alt = "Classmate Profile">
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+
+        <div class = "footer-text">
+
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit ex id nisi dignissimos similique? Et reiciendis sed cum temporibus tempora.
+
+        </div>
+
+    </footer>
+    
+    <script src = "classmate_fetch.js"></script>
+
+</body>
+</html>
