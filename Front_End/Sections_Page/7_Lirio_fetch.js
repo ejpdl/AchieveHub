@@ -32,6 +32,7 @@ async function loadTeacherData(){
 
         const fullName = `${data.First_Name} ${data.Last_Name}`
         document.querySelector(`#teacher-name`).textContent = fullName;
+        
 
     }catch(error){
 

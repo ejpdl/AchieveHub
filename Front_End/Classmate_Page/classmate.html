@@ -9,16 +9,14 @@
 </head>
 <body>
 
+
+    <!-- //ANCHOR - NAVIGATION BAR -->
     <nav> 
 
         <a href = "#">
             <img src = "../assets/logo/euC.png" alt = "MSEUF logo" class = "logo-image">
+            <h1> Manuel S. Enverga Candelaria Quezon Inc.</h1>
         </a>
-
-        <ul class = "menus">
-            <a href = "#"> <button class = "nav-menus"> Home </button> </a>
-            <a href = "#artifacts"> <button class = "nav-menus"> Artifacts </button> </a>
-        </ul>
 
         <a href = "javascript:void(0)" onclick = "history.back()" rel="noopener noreferrer">
             <button class = "log-out-button"> Back to Profile </button>
@@ -26,6 +24,8 @@
 
     </nav>
 
+    
+    <!-- //ANCHOR - MAIN PAGE -->
     <main>
 
         <div class = "container">
@@ -40,12 +40,6 @@
 
                     <ul>
                         <li>
-                            > <span> Age </span>
-                        </li>
-                        <li>
-                            > <span> Birthday </span>
-                        </li>
-                        <li>
                             > <span> Phone Number </span>
                         </li>
                         <li>
@@ -55,7 +49,7 @@
 
                 </div>
 
-                <a href = "#">
+                <a href = "../Artifacts_Page/quiz.html" onclick="setClassmateId('CLASSMATE_ID')">
                     <button class = "button-artifacts"> See <span id = name-button> </span> Artifacts </button>
                 </a>
 
@@ -63,7 +57,7 @@
 
             <div class = "classmate-profile">
 
-                <img src = "../assets/profiles/2x2(EJ).jpg" class = "profile" alt = "Classmate Profile">
+                <img id = "profile" src = "" class = "profile" alt = "Classmate Profile">
 
             </div>
 
@@ -71,6 +65,7 @@
 
     </main>
 
+    <!-- //ANCHOR - FOOTER -->
     <footer>
 
         <div class = "footer-text">
@@ -81,6 +76,7 @@
 
     </footer>
     
+    <script src = "classmate_function.js"></script>
     <script src = "classmate_fetch.js"></script>
 
 </body>

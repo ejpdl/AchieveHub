@@ -42,20 +42,88 @@ async function loadClassmateData(){
 
         }
 
+        const profileImage = document.querySelector(`#profile`);
+
+        if(data.Profile_Picture){
+
+            profileImage.src = `http://localhost:5000/${data.Profile_Picture}`;
+            profileImage.alt = `${data.First_Name}'s Profile Picture`;
+
+        }
+
+        
         document.querySelector(`#classmate-name`).textContent = `${data.First_Name} ${data.Last_Name}`;
-        document.querySelector(`#gradesection`).textContent= data.Grade_Section;
+        const gradeAndsection = `${data.Grade_Level} - ${data.Section}`;
+        document.querySelector(`#gradesection`).textContent= gradeAndsection;
         document.querySelector(`#bio`).textContent = data.About_Me;
 
         const demographics = document.querySelectorAll(`.demographics span`);
-        demographics[0].textContent = `${data.Age} Years Old`;
-        demographics[1].textContent = new Date(data.Birthday).toLocaleDateString();
-        demographics[2].textContent = data.Phone_Number;
-        demographics[3].textContent = data.Email;
+        demographics[0].textContent = data.Phone_Number;
+        demographics[1].textContent = data.Email;
+
+        if(studentID === token){
+
+            loadQuizzes(token);
+
+        }
 
     }catch(error){
 
         console.log(`Error fetching classmate data ${error}`);
         alert(`An error occured while loading classmate data`);
+
+    }
+
+}
+
+async function loadClassmateFiles(studentID){
+
+    const token = localStorage.getItem('token');
+
+    try{
+
+        const response = await fetch(`http://localhost:5000/view/classmate/quizzes/${studentID}`, {
+
+            method: 'GET',
+            headers: {
+
+                'Authorization' :  token
+            }
+
+        });
+
+        if(response.ok){
+
+            const files = await response.json();
+            const uploadedImagesContainer = document.querySelector(`#uploadedImagesContainer`);
+
+            if(files.length > 0){
+
+                uploadedImagesContainer.innerHTML = '';
+
+                files.forEach(file => {
+
+                    const imageUrl = `http://localhost:5000/${file.File}`;
+                    addImageCard(imageUrl, file);
+
+                });
+
+            }else{
+
+                uploadedImagesContainer.innerHTML = "<p>No quizzes found.</p>";
+
+            }
+
+        }else{
+
+            console.error("Error fetching classmate's uploaded files");
+
+        }
+
+    }catch(error){
+
+        console.error("Error:", error);
+
     }
 
 }

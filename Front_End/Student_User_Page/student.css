@@ -225,6 +225,7 @@ section {
 
     font-size: 2em;
     font-weight: 400;
+    text-transform: capitalize;
 
 }
 
@@ -602,12 +603,6 @@ textarea#bio:focus,
 
 }
 
-#eye-icon {
-    font-size: 2rem; /* Adjust size as needed */
-    width: 30px;     /* If using an image, set width */
-    height: 30px;    /* If using an image, set height */
-}
-
 /* ABOUT PAGE SECTION */
 #about {
 
@@ -683,6 +678,23 @@ textarea#bio:focus,
 
     display: none; 
  
+}
+
+.eye-button {
+
+    font-size: 3em;
+    background-color: transparent;
+    border: none;
+    margin-left: 8.2em;
+    height: 0px;
+    width: 0px;
+
+}
+
+#eye-icon {
+
+    cursor: pointer;
+
 }
 
 /* ARTIFACTS PAGE SECTION */

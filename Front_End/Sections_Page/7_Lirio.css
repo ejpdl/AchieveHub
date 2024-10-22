@@ -311,8 +311,7 @@ header .teacher-name {
     text-align: center;
     border-radius: 0.25rem;
     text-decoration: none;
-    transition: background-color 0.15s ease-in-out;
-
+    
 }
 
 .primary {

@@ -12,22 +12,13 @@
 
 }
 
-:root {
-
-    --body-background: rgb(24, 24, 24);
-
-}
-
 body {
 
     min-height: 100vh;
-    min-width: 100%;
-    background-color: #203429;
-    color: white;
+    background-color: #e7f2fd;
 
 }
 
-/* NAVBAR SECTION */
 nav { 
 
     height: 5em;
@@ -38,7 +29,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #111d16;
+    box-shadow: 0 10px 20px rgba(27, 27, 27, 0.5);
     backdrop-filter: blur(10px);
     z-index: 1000;
   
@@ -58,15 +49,14 @@ nav h1 {
     margin-top: 20px;
     margin-left: 4em;
     text-decoration: none;
-    color: white;
+    color: black;
     text-transform: uppercase;
     
 }
 
 nav .log-out-button {
 
-    font-family: inherit;
-    color: white;
+    color: black;
     background: none;
     border: 2px solid;
     border-radius: 10px;
@@ -123,101 +113,105 @@ nav .log-out-button {
 
 .container {
 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
+    position: relative;
+    max-width: 1350px;
+    width: 100%;
+    padding: 20px;
+    margin: 100px auto;
 
 }
 
-.profile-info {
+button {
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: left;
-    margin-left: 8em;
-
-}
-
-.profile-info h1 {
-
-    color: white;
-    font-size: 3em;
-    margin-top: 3em;
-    margin-bottom: 0.1em; 
-
-}
-
-.profile-info p {
-
+    padding: 10px 20px;
     font-size: 1em;
-    text-align: left;
-    margin-bottom: 30px;
-    width: 80%;
-
-}
-
-.profile-info ul {
-
-    list-style: none;
-    padding: 10px;
-    font-size: 1em;
-    margin-bottom: 30px;
-
-}
-
-.profile-info ul li {
-
-    margin-bottom: 10px;
-
-}
-
-.button-artifacts {
-
-    padding: 15px 25px;
-    background-color: none;
+    background-color: white;
+    border-radius: 6px;
     border: none;
-    border-radius: 10px;
-    color: black;
     cursor: pointer;
-    font-weight: 700;
-    letter-spacing: 1px;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
-    width: 20em;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.7); 
-    transition: background-color 0.4s ease-in-out, transform 0.4s ease-in-out, color 0.4s ease-in-out;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
 
 }
 
-.button-artifacts:hover {
+button.active {
 
-    background-color: maroon;
-    transform: translateY(-10px);
-    transition: 0.4s ease-in;
+    background: maroon;
     color: white;
 
 }
 
-.classmate-profile .profile {
+.filter-buttons {
 
-    width: 25vw;
-    height: 50vh;
-    border-radius: 10px;
-    border: 2px solid maroon;
-    margin-top: 30%;
-    margin-right: 9em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    flex-wrap: wrap;
+    width: 100%;
 
 }
 
-.footer-text {
+.filter-buttons h1 {
 
-    text-align: center;
-    padding: 2em;
-    color: #888;
-    font-size: 1.1em;
-    margin-top: 30px;
+    flex: 1 0 auto;
+    text-transform: uppercase;
+    color: maroon;
+
+}
+
+.filter-cards {
+
+    margin-top: 25px;
+    display: flex;
+    gap: 1.5em;
+    flex-wrap: wrap;
+
+}
+
+.card {
+
+    flex-grow: 1;
+    flex-basis: 300px;
+    background-color: white;
+    padding: 0.5em;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+
+}
+
+.card img {
+
+    width: 100%;
+    height: 210px;
+    border-radius: 8px 8px 0 0;
+    object-fit: cover;
+
+}
+
+.card-body {
+
+    padding: 15px 20px 20px;
+
+}
+
+.card-title {
+
+    font-size: 1em;
+    font-weight: 600;
+    color: maroon;
+
+}
+
+.card-text {
+
+    font-size: 0.8em;
+    color: #333;
+
+}
+
+.card.hide {
+
+    display: none;
 
 }
 
@@ -230,7 +224,8 @@ nav .log-out-button {
 
 ::-webkit-scrollbar-thumb {
 
-    background: #344E41;
-    border-radius: 1em;
+    background-color: #344E41;
+    border-radius: 1em; 
 
 }
+
