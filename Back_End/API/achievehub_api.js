@@ -1,3 +1,4 @@
+// ANCHOR - MIDDLEWARES
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
@@ -5,6 +6,7 @@ const moment = require('moment');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const secret = 'your_jwt_secret';
 
@@ -12,6 +14,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
+app.use('/artifacts', express.static('artifacts'));
 app.use(express.urlencoded({ extended: true }));
 
 const logger = (req, res, next) => {
@@ -48,8 +52,75 @@ connection.connect((err) => {
 
 });
 
+// ANCHOR - UPLOAD USER IMAGE
+const fileStorage = multer.diskStorage({
 
-// JSON WEB TOKEN (FOR AUTHENTICATION AND AUTHORIZATION)
+    destination: (req, file, cb) => {
+
+        cb(null, './uploads');
+
+    },
+
+    filename: (req, file, cb) => {
+
+        cb(null, Date.now() + '--' + file.originalname);
+
+    }
+
+});
+
+const upload = multer({ storage: fileStorage });
+
+
+// ANCHOR - UPLOAD ARTIFACTS
+const artifactsStorage = multer.diskStorage({
+
+    destination: (req, file, cb) => {
+
+        cb(null, './artifacts');
+
+    },
+
+    filename: (req, file, cb) => {
+
+        cb(null,  Date.now() + '--' + file.originalname);
+
+    }
+
+});
+
+const uploadArtifacts = multer({ storage: artifactsStorage });
+
+
+// ANCHOR - TO TEST IF ITS UPLOADING
+app.post('/single', uploadArtifacts.single('artifact'), (req, res) => {
+
+    if(req.file){
+
+        res.json({
+
+            message: 'File uploaded successfully',
+            filename: req.file.filename
+
+        });
+
+    }else{
+
+        res.status(400).json({ message: 'No file uploaded' });
+
+    }
+
+});
+
+app.post('/multiple', upload.array('images', 5), (req, res) => {
+
+    console.log(req.file);
+    res.send(`Successfully uploaded multiple files`);
+
+});
+
+
+// ANCHOR - JSON WEB TOKEN (FOR AUTHENTICATION AND AUTHORIZATION)
 const verifyToken = async (req, res, next) => {
 
     try{
@@ -84,7 +155,7 @@ const verifyToken = async (req, res, next) => {
 };
 
 
-// LOG IN API
+// ANCHOR - LOG IN API
 app.post(`/credentials/login`, async (req, res) => {
 
     try{
@@ -163,7 +234,7 @@ app.post(`/credentials/login`, async (req, res) => {
 });
 
 
-// STUDENT PAGE API
+// ANCHOR - STUDENT PAGE API
 app.get(`/student_user/view/`, verifyToken, async (req, res) => {
 
     try{
@@ -190,6 +261,10 @@ app.get(`/student_user/view/`, verifyToken, async (req, res) => {
 
             }
 
+            const student = rows[0];
+
+            student.Profile_Picture = student.Profile_Picture ? `http://localhost:5000/uploads${student.Profile_Picture}` : null;
+
         });
 
 
@@ -201,8 +276,7 @@ app.get(`/student_user/view/`, verifyToken, async (req, res) => {
 
 });
 
-
-// CLASSMATE PAGE API
+// ANCHOR - CLASSMATE PAGE API
 app.get(`/classmate/view/:Student_ID`, verifyToken, async (req, res) => {
 
     try{
@@ -221,7 +295,18 @@ app.get(`/classmate/view/:Student_ID`, verifyToken, async (req, res) => {
 
             if(rows.length > 0){
 
-                res.status(200).json(rows[0]);
+                const classmate = rows[0];
+
+                if(classmate.hide_demographics){
+
+                    delete classmate.Age;
+                    delete classmate.Birthday;
+                    delete classmate.Phone_Number;
+                    delete classmate.Email;
+
+                }
+
+                res.status(200).json(classmate);
 
             }else{
 
@@ -234,18 +319,51 @@ app.get(`/classmate/view/:Student_ID`, verifyToken, async (req, res) => {
     }catch(error){
 
         console.log(error);
+        res.status(500).json({ msg: `Server Error` });
 
     }
 
 });
 
 
-// UPDATE A STUDENT USER API
-app.put(`/student_user/update`, verifyToken, async (req, res) => {
+// ANCHOR - TO SHOW AND TO HIDE DEMOGRAPHICS
+app.post(`/student_user/privacy`, verifyToken, async (req, res) => {
 
     try{
 
-        const { First_Name, Middle_Name, Last_Name, Birthday, Age, Gender, Email, Grade_Section, About_Me, Student_ID } = req.body;
+        const { Student_ID } = req.user;
+        const { hide_demographics } = req.body;
+
+        const query = `UPDATE student_user SET hide_demographics = ? WHERE Student_ID = ?`;
+
+        connection.query(query, [hide_demographics, Student_ID], (err, result) => {
+
+            if(err){
+
+                return res.status(500).json({ error: err.message });
+
+            }   
+
+            res.status(200).json({ msg: `Privacy settings updated successfully` });
+
+        });
+
+    }catch(error){
+
+        console.log(error);
+        res.status(500).json({ msg: "Server Error" });
+
+    }
+
+})
+
+
+// ANCHOR - UPDATE A STUDENT USER API
+app.put(`/student_user/update`, verifyToken, upload.single('image'), async (req, res) => {
+
+    try{
+
+        const { First_Name, Middle_Name, Last_Name, Birthday, Age, Gender, Email, Grade_Level, Section, About_Me, Student_ID } = req.body;
 
         if(!Student_ID){
 
@@ -253,9 +371,17 @@ app.put(`/student_user/update`, verifyToken, async (req, res) => {
 
         }
 
-        const query = `UPDATE student_user SET First_Name = ?, Middle_Name = ?, Last_Name = ?, Birthday = ?, \`Age\` = ?, Gender = ?, Email = ?, Grade_Section = ?, About_Me = ? WHERE Student_ID = ?`;
+        let profile = null;
 
-        connection.query(query, [First_Name, Middle_Name, Last_Name, Birthday, Age, Gender, Email, Grade_Section, About_Me, Student_ID], (err, results) => {
+        if(req.file){
+
+            profile = `uploads/${req.file.filename}`;
+
+        }
+
+        const query = `UPDATE student_user SET First_Name = ?, Middle_Name = ?, Last_Name = ?, Birthday = ?, \`Age\` = ?, Gender = ?, Email = ?, Grade_Level = ?, Section = ?, About_Me = ?, Profile_Picture = ? WHERE Student_ID = ?`;
+
+        connection.query(query, [First_Name, Middle_Name, Last_Name, Birthday, Age, Gender, Email, Grade_Level, Section, About_Me, profile, Student_ID], (err, results) => {
 
             if(err){
 
@@ -282,6 +408,291 @@ app.put(`/student_user/update`, verifyToken, async (req, res) => {
 
 });
 
+
+// ANCHOR - QUIZ UPLOAD
+app.post(`/upload/quiz`, verifyToken, uploadArtifacts.single('file'), async (req, res) => {
+
+    try{
+
+        const { title, subject } = req.body;
+
+        const { Student_ID } = req.user;
+
+        let filePath = null;
+
+        if(req.file){
+
+            filePath = `artifacts/${req.file.filename}`;
+
+        }
+
+        const query = `INSERT INTO Quiz (Title, Subject, File, Student_ID) VALUES (?, ?, ?, ?)`;
+
+        connection.query(query, [title, subject, filePath, Student_ID], (err, results) => {
+
+            if(err){
+
+                return res.status(500).json({ error: err.message });
+
+            }
+
+            if(results.affectedRows === 0){
+
+                return res.status(404).json({ error: `No record inserted` });
+
+            }
+
+            res.status(200).json({
+
+                msg: `Successfully Uploaded`,
+                title: title,
+                subject: subject,
+                file_path: filePath
+
+            });
+
+        });
+
+    }catch(e){
+
+        console.log(e);
+        res.status(500).json({ error: 'Server error' });
+
+    }
+
+});
+
+
+// ANCHOR - UPLAOAD PERFORMANCE TASK
+app.post(`/upload/performance_task`, verifyToken, uploadArtifacts.single('file'), async (req, res) => {
+
+    try{
+
+        const { title, subject } = req.body;
+
+        let filePath = null;
+
+        if(req.file){
+
+            filePath = `artifacts/${req.file.filename}`;
+
+        }
+
+        const query = `INSERT INTO Performance_Task (Title, Subject, File) VALUES (?, ?, ?)`;
+
+        connection.query(query, [title, subject, filePath], (err, results) => {
+
+            if(err){
+
+                return res.status(500).json({ error: err.message });
+
+            }
+
+            if(results.affectedRows === 0){
+
+                return res.status(404).json({ error: `No record inserted` });
+
+            }
+
+            res.status(200).json({
+
+                msg: `Successfully Uploaded`,
+                title: title,
+                subject: subject,
+                file_path: filePath
+
+            });
+
+        });
+
+    }catch(e){
+
+        console.log(e);
+        res.status(500).json({ error: 'Server error' });
+
+    }
+
+});
+
+// ANCHOR - VIEW QUIZ ARTIFACTS
+app.get(`/view/quiz`, verifyToken, async (req, res) => {
+
+    try{
+
+        const { Student_ID } = req.user;
+
+        const query = `SELECT * FROM Quiz WHERE Student_ID = ?`;
+
+        connection.query(query, [Student_ID], (err, results) => {
+
+            if(err){
+
+                return res.status(500).json({ error: err.message });
+
+            }
+
+            res.status(200).json(results);
+
+        });
+
+    }catch(e){
+
+        console.log(e);
+        res.status(500).json({ error: 'Server error' });
+
+    }
+
+});
+
+
+// ANCHOR - VIEW CLASSMATES QUIZ
+app.get(`/view/classmate/quizzes/:Student_ID`, verifyToken, async (req, res) => {
+
+    const { Student_ID } = req.params;
+
+    const query = `SELECT * FROM Quiz WHERE Student_ID != ?`;
+
+    connection.query(query, [Student_ID], (err, rows) => {
+
+        if(err){
+
+            return res.status(500).json({ error: err.message });
+
+        }
+
+        if(rows.length > 0){
+
+            res.status(200).json(rows);
+
+        }else{
+
+            res.status(404).json({ msg: `No quizzes found` });
+
+        }
+
+    });
+
+});
+
+
+// ANCHOR - VIEW PERFORMANCE TASK
+app.get(`/view/performance_task`, verifyToken, async (req, res) => {
+
+    try{
+
+        const query = `SELECT * FROM performance_task`;
+
+        connection.query(query, (err, results) => {
+
+            if(err){
+
+                return res.status(500).json({ error: err.message });
+
+            }
+
+            res.status(200).json(results);
+
+        });
+
+    }catch(e){
+
+        console.log(e);
+        res.status(500).json({ error: 'Server error' });
+
+    }
+
+});
+
+
+// ANCHOR - DELETE AN ARTIFACT
+app.delete(`/upload/delete-Q`, verifyToken, async (req, res) => {
+
+    const { id } = req.body;
+
+    const query = `DELETE FROM quiz WHERE id = ?`;
+
+    connection.query(query, [id], (err, rows) => {
+
+        if(err){
+
+            return res.status(500).json({ error: err.message });
+
+        }
+
+        res.status(200).json({ msg: `Successfully Deleted!` });
+
+    });
+
+});
+
+app.delete(`/upload/delete-PT`, verifyToken, async (req, res) => {
+
+    const { id } = req.body;
+
+    const query = `DELETE FROM performance_task WHERE id = ?`;
+
+    connection.query(query, [id], (err, rows) => {
+
+        if(err){
+
+            return res.status(500).json({ error: err.message });
+
+        }
+
+        res.status(200).json({ msg: `Successfully Deleted!` });
+
+    });
+
+});
+
+//ANCHOR - UPLOAD THE IMAGE IN THE ARTIFACTS
+app.post(`/upload/artifacts`, verifyToken, upload.single('file'), async (req, res) => {
+
+    try {
+
+        const { title, subject, material_type } = req.body;
+
+        let filePath = null;
+
+        if(req.file){
+
+            filePath = `uploads/${req.file.filename}`;
+
+        }
+
+        const query = `INSERT INTO materials (title, subject, material_type, file_path) VALUES (?, ?, ?, ?)`;
+
+        connection.query(query, [title, subject, material_type, filePath], (err, results) => {
+
+            if(err){
+
+                return res.status(500).json({ error: err.message });
+
+            }
+
+            if(results.affectedRows === 0){
+
+                return res.status(404).json({ error: `No record inserted` });
+
+            }
+
+            res.status(200).json({
+
+                msg: `Successfully Uploaded`,
+                file_path: filePath
+
+            });
+
+        });
+
+    }catch(e){
+
+        console.log(e);
+        res.status(500).json({ error: 'Server error' });
+
+    }
+
+});
 
 
 const PORT = process.env.PORT || 5000;
