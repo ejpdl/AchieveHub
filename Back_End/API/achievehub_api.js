@@ -470,6 +470,8 @@ app.post(`/upload/performance_task`, verifyToken, uploadArtifacts.single('file')
 
         const { title, subject } = req.body;
 
+        const { Student_ID } = req.user;
+
         let filePath = null;
 
         if(req.file){
@@ -478,9 +480,9 @@ app.post(`/upload/performance_task`, verifyToken, uploadArtifacts.single('file')
 
         }
 
-        const query = `INSERT INTO Performance_Task (Title, Subject, File) VALUES (?, ?, ?)`;
+        const query = `INSERT INTO Performance_Task (Title, Subject, File, Student_ID) VALUES (?, ?, ?, ?)`;
 
-        connection.query(query, [title, subject, filePath], (err, results) => {
+        connection.query(query, [title, subject, filePath, Student_ID], (err, results) => {
 
             if(err){
 
@@ -550,7 +552,7 @@ app.get(`/view/classmate/quizzes/:Student_ID`, verifyToken, async (req, res) => 
 
     const { Student_ID } = req.params;
 
-    const query = `SELECT * FROM Quiz WHERE Student_ID != ?`;
+    const query = `SELECT * FROM Quiz WHERE Student_ID = ?`;
 
     connection.query(query, [Student_ID], (err, rows) => {
 
@@ -580,9 +582,11 @@ app.get(`/view/performance_task`, verifyToken, async (req, res) => {
 
     try{
 
-        const query = `SELECT * FROM performance_task`;
+        const { Student_ID } = req.user;
 
-        connection.query(query, (err, results) => {
+        const query = `SELECT * FROM performance_task WHERE Student_ID = ?`;
+
+        connection.query(query, [Student_ID], (err, results) => {
 
             if(err){
 
@@ -603,6 +607,35 @@ app.get(`/view/performance_task`, verifyToken, async (req, res) => {
 
 });
 
+
+// ANCHOR - VIEW CLASSMATES PERFORMANCE TASK
+app.get(`/view/classmate/performance_task/:Student_ID`, verifyToken, async (req, res) => {
+
+    const { Student_ID } = req.params;
+
+    const query = `SELECT * FROM Performance_Task WHERE Student_ID = ?`;
+
+    connection.query(query, [Student_ID], (err, rows) => {
+
+        if(err){
+
+            return res.status(500).json({ error: err.message });
+
+        }
+
+        if(rows.length > 0){
+
+            res.status(200).json(rows);
+
+        }else{
+
+            res.status(404).json({ msg: `No performance task found` });
+
+        }
+
+    });
+
+});
 
 // ANCHOR - DELETE AN ARTIFACT
 app.delete(`/upload/delete-Q`, verifyToken, async (req, res) => {
@@ -694,6 +727,109 @@ app.post(`/upload/artifacts`, verifyToken, upload.single('file'), async (req, re
 
 });
 
+// ANCHOR - VIEW CLASSMATES ARTIFACTS
+app.get(`/view/classmate/artifacts/:Student_ID`, verifyToken, async (req, res) => {
+
+    const { Student_ID } = req.params;
+
+    const quiz = `
+    SELECT q.*, s.First_Name, s.Last_Name 
+    FROM Quiz q 
+    JOIN student_user s ON q.Student_ID = s.Student_ID 
+    WHERE q.Student_ID = ?`;
+
+    const performance = `
+    SELECT p.*, s.First_Name, s.Last_Name 
+    FROM Performance_Task p 
+    JOIN student_user s ON p.Student_ID = s.Student_ID 
+    WHERE p.Student_ID = ?`;
+
+
+    try {
+       
+        const [quizResults, performanceTaskResults] = await Promise.all([
+
+            new Promise((resolve, reject) => {
+
+                connection.query(quiz, [Student_ID], (err, rows) => {
+
+                    if(err) return reject(err);
+                    resolve(rows);
+
+                });
+
+            }),
+
+            new Promise((resolve, reject) => {
+
+                connection.query(performance, [Student_ID], (err, rows) => {
+
+                    if(err) return reject(err);
+                    resolve(rows);
+
+                });
+
+            })
+
+        ]);
+
+        const combinedResults = {
+
+            quizzes: quizResults,
+            performanceTasks: performanceTaskResults
+
+        };
+
+        res.status(200).json(combinedResults);
+
+    }catch(error){
+
+        res.status(500).json({ error: err.message });
+
+    }
+
+});
+
+
+// ANCHOR - CREATE ACCOUNT / ADD ACOUNT
+app.post(`/credentials/add`, async (req, res) => {
+
+    const { LogIn_ID, Student_ID, Hash_Password, First_Name, Last_Name, role } = req.body;
+
+    if(!['admin', 'student'].includes(role)){
+
+        return res.status(400).json({ error: `Invalid role.` });
+
+    }
+
+    try{
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(Hash_Password, salt);
+
+        const query = `INSERT INTO login_credentials (LogIn_ID, Student_ID, Hash_Password, First_Name, Last_Name, Role) VALUES (?, ?, ?, ?, ?, ?)`;
+
+        connection.query(query, [LogIn_ID, Student_ID, hashedPassword, First_Name, Last_Name, role], (err, results) => {
+
+            if(err){
+
+                console.log(err);
+                return res.status(500).json({ error: err.message });
+
+            }
+
+            res.status(200).json({ msg: `User registered as ${role}` });
+
+        })
+
+    }catch(error){
+
+        console.log(error);
+        res.status(500).json({ error: "Server error during registration." });
+
+    }
+
+});
 
 const PORT = process.env.PORT || 5000;
 
