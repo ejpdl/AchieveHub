@@ -32,3 +32,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const studentLinks = document.querySelectorAll('a[data-student-id]');
+
+    studentLinks.forEach(link => {
+
+        link.addEventListener('click', function (event) {
+
+            const studentId = this.getAttribute('data-student-id');
+            localStorage.setItem('classmateId', studentId);
+
+        });
+        
+    });
+
+});

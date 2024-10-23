@@ -37,3 +37,19 @@ async function togglePrivacySetting(hideDemographics){
     
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+
+    const classmateLinks = document.querySelectorAll('.classmate-link');
+
+    classmateLinks.forEach(link => {
+
+        link.addEventListener('click', function () {
+
+            const studentId = this.getAttribute('data-student-id');
+            localStorage.setItem('classmateId', studentId);
+
+        });
+        
+    });
+
+});

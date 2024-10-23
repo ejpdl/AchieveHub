@@ -131,57 +131,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
-document.addEventListener("DOMContentLoaded", async () => {
-
-    const token = localStorage.getItem('token');
-
-    try {
-        
-        const response = await fetch(`http://localhost:5000/view/classmate/quizzes`, {
-
-            method: 'GET',
-            headers: {
-
-                'Authorization' :  token
-
-            }
-
-        });
-
-        if(response.ok){
-
-            const files = await response.json();
-            const uploadedImagesContainer = document.querySelector(`#uploadedImagesContainer`);
-
-            if(files.length > 0){
-
-                files.forEach(file => {
-
-                    const imageUrl = `http://localhost:5000/${file.File}`;
-                    addImageCard(imageUrl, file);
-
-                });
-
-            }else{
-
-                uploadedImagesContainer.innerHTML = "<p>No quizzes found.</p>";
-
-            }
-
-        }else{
-
-            console.error("Error fetching uploaded files");
-
-        }
-
-    }catch(error){
-
-        console.error("Error:", error);
-
-    }
-
-});
-
 
 function addImageCard(fileUrl, fileData){
 
