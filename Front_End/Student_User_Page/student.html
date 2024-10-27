@@ -9,6 +9,73 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+
+    <dialog id = "terms-and-condition-dialog">
+
+        <div class = "terms-condition-container">
+
+            <h2> Terms and Conditions </h2>
+            
+            <div class = "content">
+
+                <h5> Last Updated: October 28, 2024 </h1>    
+                <p>
+                    Welcome to the Digital Portfolio for Grade 7 Students (the “Platform”). This Platform is designed to help students securely manage and display their educational achievements, demographic information, and digital files. By accessing or using this Platform, you agree to comply with the following terms and conditions.
+                </p>    
+
+                <h5> 1. Use of Platform </h5>
+                <p>
+                    This Platform is intended solely for Grade 7 students, their authorized guardians, and school personnel. Unauthorized access, use, or distribution of any content on this Platform is strictly prohibited.
+                </p>
+
+                <h5> 2. Personal Information </h5>
+                <p>
+                    The Platform collects personal information such as students’ phone numbers, email addresses, birthdays, ages, and profile pictures. By using this Platform, you consent to the collection, storage, and use of this information solely for educational and record-keeping purposes. We implement appropriate measures to ensure the confidentiality and security of this information.
+                </p>
+
+                <h5> 3. Student Files and Digital Content </h5>
+                <p>
+                    Students may upload various digital files, including quizzes, assignments, and other educational artifacts. These files are intended for academic and portfolio purposes only. Unauthorized copying, sharing, or modification of these files is prohibited unless explicitly approved by the school administration.
+                </p>
+
+                <h5> 4. Privacy and Security </h5>
+                <p>
+                    We prioritize the protection of student information and employ secure methods to manage and store personal data. However, no digital platform is entirely free from security risks. Users are encouraged to practice safe and responsible use of the Platform, including safeguarding login credentials.
+                </p>
+
+                <h5> 5. User Responsibilities </h5>
+                <p>
+                    Only authorized users (students, parents, teachers, and administrators) are permitted to access this Platform.
+                    Users agree not to misuse the Platform, including attempting to access data or accounts not authorized for their use.
+                    Users must respect the privacy and confidentiality of others by not sharing any information or files outside the Platform without explicit consent.
+                </p>
+
+                <h5> 6. Limitation of Liability </h5>
+                <p>
+                    While we strive to ensure accurate information, we are not responsible for any errors or omissions in the information provided on the Platform. Use of the Platform and the materials therein is at the user’s own risk.
+                </p>
+
+                <h5> 7. Modification of Terms </h5>
+                <p>
+                    We may update these Terms and Conditions from time to time to reflect changes in our practices or legal requirements. Continued use of the Platform after modifications indicates acceptance of the updated terms.
+                </p>
+
+                <h5> 8. Contact Information </h5>
+                <p>
+                    If you have any questions or concerns regarding these Terms and Conditions, please contact Developer (Ephraim De Lara).
+                </p>
+
+            </div>
+
+            <div class = "accept-decline-button">
+                <button class = "accept" id = "accept-button"> Accept </button>
+                <button class = "decline" id = "decline-button"> Decline </button>
+            </div>
+
+        </div>
+
+    </dialog>
+    
     
     <!-- //ANCHOR - NAVIGATION PAGE  -->
     <nav> 
@@ -201,7 +268,7 @@
                                 <option value = "filipino"> Filipino </option>
                                 <option value = "math"> Math </option>
                                 <option value = "science"> Science </option>
-                                <option value = "pe"> P.E. </option>
+                                <option value = "mapeh"> MAPEH </option>
                             </select>
             
                         </div>
@@ -211,11 +278,11 @@
                             <label for = "material-type"> Type of Material </label>
                             <select id = "material-type" name = "material_type" required>
                                 <option value = ""> --Select Material-- </option>
-                                <option value = "quizzes"> Quiz </option>
-                                <option value = "pt"> Performance Task </option>
-                                <option value = "assignment"> Assignment </option>
-                                <option value = "seatwork"> Seatwork </option>
-                                <option value = "exam-papers"> Examination Papers </option>
+                                <option value = "Quiz"> Quiz </option>
+                                <option value = "Performance_Task"> Performance Task </option>
+                                <option value = "Assignment"> Assignment </option>
+                                <option value = "SeatWork"> Seatwork </option>
+                                <option value = "ExamPapers"> Examination Papers </option>
                             </select>
             
                         </div>
@@ -223,7 +290,7 @@
                         <div class = "form-group">
             
                             <label for = "file"> Upload File </label>
-                            <input type = "file" id = "file" name = "file" accept = ".pdf, .docx, .png, .jpg" multiple required />
+                            <input type = "file" id = "file" name = "file" accept = ".pdf, .docx, .png, .jpeg, .mp4, .avi, .mkv, .jpg" required />
             
                         </div>
             
@@ -327,7 +394,7 @@
                     It is used to keep track of the progress of the students in achieving the learning standards and in the development of 21st century skills. 
                 </p>
         
-                <a href = "../Artifacts_Page/artifacts.html">
+                <a href = "../Artifacts_Page/assignment.html">
                     <button class = "upload-button-artifacts"> Visit </button>
                 </a>
 
@@ -340,7 +407,7 @@
                     Typically short and can include exercises, worksheets, or small projects aimed at reinforcing the lesson taught or assessing students' understanding of the material.
                 </p>
             
-                <a href = "../Artifacts_Page/artifacts.html">
+                <a href = "../Artifacts_Page/seatwork.html">
                     <button class = "upload-button-artifacts"> Visit </button>
                 </a>
 
@@ -353,7 +420,7 @@
                     Formal assessments used to evaluate students' understanding and mastery of the curriculum.  
                 </p>
 
-                    <a href = "../Artifacts_Page/artifacts.html">
+                    <a href = "../Artifacts_Page/exampapers.html">
                         <button class = "upload-button-artifacts"> Visit </button>
                     </a>    
 

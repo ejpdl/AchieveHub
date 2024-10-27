@@ -36,6 +36,13 @@ async function loadStudentData(){
 
         });
 
+        if(!response.ok){
+
+            const ErrorData = await response.json();
+            console.error('Error', ErrorData);
+            throw new Error(ErrorData.msg || `Failed to fetch student data`);
+        }
+
         const data = await response.json();
 
         if(!data){
@@ -43,6 +50,8 @@ async function loadStudentData(){
             throw new Error(`No data found`);
 
         }
+
+        const loggedInStudentID = data.Student_ID;
 
         const fullname = `${data.First_Name} ${data.Last_Name}`;
         const age = `${data.Age} Years Old`;
@@ -85,6 +94,7 @@ async function loadStudentData(){
         const profileAbout = document.querySelector(`#profile-about`);
         profileAbout.src = `http://localhost:5000/${data.Profile_Picture}`;
 
+        return loggedInStudentID;
 
     }catch(error){
 
@@ -94,9 +104,6 @@ async function loadStudentData(){
     }
 
 }
-
-loadStudentData();
-
 
 async function loadClassmateData(studentID){
 
@@ -151,14 +158,32 @@ async function loadClassmateData(studentID){
 
 }
 
-const peerCards = document.querySelectorAll('.peer-cards');
+async function loadClassmate(){
 
-peerCards.forEach(card => {
+    const loggedInStudentID = await loadStudentData();
+    if(!loggedInStudentID) return;
 
-    const studentID = card.getAttribute('data-student-id');
-    loadClassmateData(studentID);
+    const peerCards = document.querySelectorAll('.peer-cards');
 
-});
+    peerCards.forEach(card => {
+
+        const studentID = card.getAttribute('data-student-id');
+
+        if(studentID === loggedInStudentID){
+
+            card.parentElement.remove();
+            return;
+
+        }
+
+        loadClassmateData(studentID);
+
+    });
+
+}
+
+loadClassmate();
+
 
 // EDIT DIALOG FETCH
 async function EditDialog() {
@@ -285,6 +310,52 @@ async function EditDialog() {
 
 }
 
+// ANCHOR - UPLOAD FILES
+document.querySelector(`#uploadForm`).addEventListener("submit", async function (e){
+
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const token = localStorage.getItem('token');
+
+    try {
+
+        const response = await fetch(form.action, {
+
+            method: 'POST',
+            body: formData,
+            headers: {
+
+                'Authorization' :  token
+
+            }
+
+        });
+
+        if(response.ok){
+
+            alert(`Successfully Uploaded`);
+            location.reload();
+
+
+        }else{
+
+            alert("Error uploading file");
+
+        }
+
+    }catch(error){
+
+        console.error("Error:", error);
+        alert("An error occurred while uploading.");
+
+    }
+    
+});
+
+
 function toggleDemographics(){
 
     const bday = document.querySelector(`#birthday`);
@@ -328,61 +399,5 @@ function toggleDemographics(){
 document.querySelector(`#toggle-eye`).addEventListener('click', toggleDemographics);
 
 
-// ANCHOR - UPLOAD FILES
-document.querySelector(`#uploadForm`).addEventListener("submit", async function (e){
-
-    e.preventDefault();
-
-    const form = e.target;
-    const formData = new FormData(form);
-
-    const token = localStorage.getItem('token');
-
-    try {
-
-        const response = await fetch(form.action, {
-
-            method: 'POST',
-            body: formData,
-            headers: {
-
-                'Authorization' :  token
-
-            }
-
-        });
-
-        if(response.ok){
-
-            const data = await response.json();
-
-            if(data.file_path){
-
-                const imageUrl = `http://localhost:5000/${data.file_path}`;
-                const uploadedImage = document.querySelector("#uploadedImage");
-
-                uploadedImage.src = imageUrl;
-                alert("File uploaded successfully!");
-
-            }else{
-
-                alert("File uploaded but image not found in response.");
-
-            }
-
-        }else{
-
-            alert("Error uploading file");
-
-        }
-
-    }catch(error){
-
-        console.error("Error:", error);
-        alert("An error occurred while uploading.");
-
-    }
-    
-});
 
 

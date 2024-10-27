@@ -55,7 +55,7 @@ async function loadClassmateFiles(){
 
         if(response.ok){
 
-            const { quizzes, performanceTasks } = await response.json();
+            const { quizzes, performanceTasks, assignments, seatworks, examPapers } = await response.json();
             const uploadedImagesContainer = document.querySelector(`#uploadedImagesContainer`);
 
             if(quizzes.length > 0){
@@ -85,6 +85,51 @@ async function loadClassmateFiles(){
             }else{
 
                 uploadedImagesContainer.innerHTML += "<p> No performance tasks found </p>";
+
+            }
+
+            if(assignments.length > 0){
+
+                assignments.forEach(file => {
+
+                    const fileUrl = `http://localhost:5000/${file.File}`;
+                    addImageCard(fileUrl, file);
+
+                });
+
+            }else{
+
+                uploadedImagesContainer.innerHTML += "<p> No Assignment found </p>";
+
+            }
+
+            if(seatworks.length > 0){
+
+                seatworks.forEach(file => {
+
+                    const fileUrl = `http://localhost:5000/${file.File}`;
+                    addImageCard(fileUrl, file);
+
+                });
+
+            }else{
+
+                uploadedImagesContainer.innerHTML += "<p> No Seatwork found </p>";
+
+            }
+
+            if(examPapers.length > 0){
+
+                examPapers.forEach(file => {
+
+                    const fileUrl = `http://localhost:5000/${file.File}`;
+                    addImageCard(fileUrl, file);
+
+                });
+
+            }else{
+
+                uploadedImagesContainer.innerHTML += "<p> No Examination Papers found </p>";
 
             }
 

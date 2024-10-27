@@ -53,3 +53,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+const dialog = document.querySelector(`#terms-and-condition-dialog`);
+
+const accept = document.querySelector(`#accept-button`);
+const decline = document.querySelector(`#decline-button`);
+
+window.onload = function(){
+
+    const accepted = localStorage.getItem("accepted");
+
+    if(!accepted){
+
+        dialog.style.display = "block";
+
+    }
+
+};
+
+accept.onclick = function(){
+    
+    dialog.style.display = 'none';
+    localStorage.setItem("accepted", "true");
+
+};
+
+decline.onclick = function(){
+    
+    window.location.href = '../Log_In_Page/log_in.html';
+
+};

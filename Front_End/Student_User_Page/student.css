@@ -22,7 +22,6 @@ body {
 
     min-height: 100vh;
     min-width: 100%;
-    background-color: white;
 
 }
 
@@ -1018,5 +1017,127 @@ footer .column-box {
 
     background: #344E41;
     border-radius: 1em;
+
+}
+
+
+.terms-condition-container {
+
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: space-between;
+    height: 90%;
+    width: 90%;
+    padding: 60px;
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    border: 2px solid white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: var(--body-background);
+    overflow: auto;
+    z-index: 10000;
+    
+}
+
+.terms-condition-container h2 {
+
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+
+}
+
+.terms-condition-container h5 {
+
+    color: #23c483;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    margin-top: 40px;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+
+}
+
+.terms-condition-container p {
+
+    color: whitesmoke;
+    font-size: 1em;
+    text-align: justify;
+
+}
+
+.accept-decline-button {
+
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 60px;
+
+}
+
+.accept-decline-button .accept {
+
+    padding: 0.8rem 2rem;
+    border-radius: 5px;
+    background-color: #58bc82;
+    color: black;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.7); 
+    transition: background-color 0.4s ease-in-out, transform 0.4s ease-in-out, color 0.4s ease-in-out;
+
+}
+
+.decline {
+
+    padding: 0.6rem 2rem;
+    background-color: #ccc;
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.7); 
+    transition: background-color 0.4s ease-in-out, transform 0.4s ease-in-out, color 0.4s ease-in-out;
+
+}
+
+.accept-decline-button .accept:hover {
+
+    background-color: maroon;
+    transform: translateY(5px);
+    transition: 0.4s ease-in-out;
+    color: white;
+
+}
+
+.accept-decline-button .accept:active {
+
+    background-color: rgb(63, 7, 7);
+    transition: 0.4s ease-in-out;
+    color: white;
+
+}
+
+.accept-decline-button .decline:hover {
+
+    background-color: maroon;
+    transform: translateY(5px);
+    transition: 0.4s ease-in-out;
+    color: white;
+
+}
+
+.accept-decline-button .decline:active {
+
+    background-color: rgb(63, 7, 7);
+    transition: 0.4s ease-in-out;
+    color: white;
 
 }

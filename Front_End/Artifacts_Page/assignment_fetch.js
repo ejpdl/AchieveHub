@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     try{
 
-        const response = await fetch('http://localhost:5000/view/performance_task', {
+        const response = await fetch('http://localhost:5000/view/assignment', {
 
             method: 'GET',
             headers: {
@@ -26,13 +26,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const imageUrl = `http://localhost:5000/${file.File}`;
                     addImageCard(imageUrl, file);
 
-                })
+                });
+
 
             }else{
 
                 uploadedImage.style.display = 'none';
+                uploadedImagesContainer.innerHTML = "<p> No Assignment Found </p>";
 
             }
+            
 
         }else{
 
@@ -128,6 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
+
 function addImageCard(fileUrl, fileData){
 
     const uploadedImagesContainer = document.querySelector(`#uploadedImagesContainer`);
@@ -140,6 +144,7 @@ function addImageCard(fileUrl, fileData){
     card.setAttribute("data-name", subjectName); 
 
     let fileType;
+    
     if(fileUrl.match(/\.(jpeg|jpg|png)$/)){
 
         // FOR IMAGES
@@ -153,8 +158,6 @@ function addImageCard(fileUrl, fileData){
         fileType = document.createElement("video");
         fileType.src = fileUrl;
         fileType.controls = true; 
-        fileType.width = 700;
-        fileType.height = 250;
 
     }else if(fileUrl.match(/\.pdf$/)){
 
@@ -219,7 +222,7 @@ async function deleteCard(id, cardElement){
 
         try{
 
-            const response = await fetch(`http://localhost:5000/delete/performance_task`, {
+            const response = await fetch(`http://localhost:5000/delete/assignment`, {
 
                 method: 'DELETE',
                 headers: {
@@ -254,3 +257,4 @@ async function deleteCard(id, cardElement){
     }
     
 }
+

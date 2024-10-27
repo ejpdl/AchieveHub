@@ -25,7 +25,7 @@
     <div class = "container">
         
         <div class = "filter-buttons">
-            <h1> Quizzes </h1>
+            <h1> Seatworks </h1>
             <button class = "active" data-name = "all"> Show All </button>
             <button data-name = "english"> English </button>
             <button data-name = "filipino"> Filipino </button>
@@ -36,7 +36,7 @@
 
         <div class = "filter-cards" id = "uploadedImagesContainer">
 
-            <form class = "form" id = "uploadForm" action = "http://localhost:5000/upload/quiz" method = "POST" enctype = "multipart/form-data">
+            <form class = "form" id = "uploadForm" action = "http://localhost:5000/upload/seatwork" method = "POST" enctype = "multipart/form-data">
 
                 <span class = "form-title"> Upload your file </span>
             
@@ -45,7 +45,7 @@
                 </p>
        
                 <label for = "title-input" class = "title"> Title: </label>
-                <input type = "text" name = "title" id = "title-input" placeholder = "Quiz#1" required />
+                <input type = "text" name = "title" id = "title-input" placeholder = "Seatwork#1" required />
             
                 <label for = "subject-input"  class = "subject"> Subject: </label>
                 <select name = "subject" id = "subject-input" required>
@@ -72,7 +72,7 @@
 
     </div>
     
-    <script src = "quiz_fetch.js"></script>
+    <script src = "seatwork_fetch.js"></script>
 
 </body>
 </html>

@@ -222,7 +222,7 @@ async function deleteCard(id, cardElement){
 
         try{
 
-            const response = await fetch(`http://localhost:5000/upload/delete-Q`, {
+            const response = await fetch(`http://localhost:5000/delete/Quiz`, {
 
                 method: 'DELETE',
                 headers: {

@@ -77,7 +77,6 @@ main {
     justify-content: center;
     padding: 70px;
     
-
 }
 
 .login-container h1 {
@@ -314,5 +313,71 @@ form .description-text {
 
     text-decoration: none;
     color: #58bc82;
+
+}
+
+/* FOR MOBILE DEVICES */
+@media (max-width: 767px){
+
+    nav .logo-text {
+
+        display: none;
+    
+    }
+
+    .typed {
+
+        font-size: 1em;  
+    
+    }
+
+    .login-container {
+        
+        align-items: center;
+        text-align: center;
+        
+    }
+
+    .login-container h1 {
+
+        font-size: 1.5em;
+    
+    }
+    
+    .login-container p {
+    
+        font-size: 0.7em;
+        width: 90%;
+        text-align: center;
+        
+    }
+
+}
+
+/* FOR TABLETS */
+@media (min-width: 767px) and (max-width: 991px){
+
+
+
+}
+
+/* FOR LAPTOPS */
+@media (min-width: 992px) and (max-width: 1199px){
+
+    
+
+}
+
+/* FOR DESKTOPS */
+@media (min-width: 1200px){
+
+    nav .logo-text {
+
+        text-transform: uppercase;
+        font-size: 1.5em;
+        font-weight: 800;
+        transition: 0.2s ease-in-out;
+    
+    }
 
 }
